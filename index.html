@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ══════════════════════════════════════════
+         TITRE DE L'ONGLET DU NAVIGATEUR
+         → Modifie le texte entre les balises <title>
+    ═══════════════════════════════════════════ -->
+    <title>Joyeux 21 ans, Joshia 🌸</title>
+
+    <!-- POLICES GOOGLE FONTS
+         Playfair Display = police élégante pour les titres
+         Inter = police moderne pour le texte normal
+         → Ne pas toucher ces lignes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ICÔNES FONT AWESOME (fa-music, fa-heart, etc.)
+         → Ne pas toucher cette ligne -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- FEUILLE DE STYLE PRINCIPALE
+         → Tout le design visuel est dans style.css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ══════════════════════════════════════════
+         ANIMATION D'INTRO — LE BOUQUET
+         → L'image du bouquet qui apparaît au chargement
+         → Pour changer l'image : modifie le chemin dans src="..."
+         → Le fichier doit être dans le dossier "image site/"
+    ═══════════════════════════════════════════ -->
+    <div id="intro-bouquet">
+        <img src="image%20site/Bouquet.png" alt="Bouquet" id="bouquet-img">
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         MUSIQUE DE FOND
+         → Pour changer la musique : remplace "musique.mp3" par ton fichier audio
+         → Le fichier doit être dans le même dossier que index.html
+         → loop = la musique recommence automatiquement
+    ═══════════════════════════════════════════ -->
+    <audio id="bg-music" loop>
+        <source src="musique.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- ══════════════════════════════════════════
+         BARRE DE PROGRESSION EN HAUT
+         → Ligne fine qui se remplit au fur et à mesure qu'on scrolle
+         → Le style et la couleur sont dans style.css → .progress-bar
+    ═══════════════════════════════════════════ -->
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- ══════════════════════════════════════════
+         NAVIGATION — BARRE EN HAUT
+         → Logo au centre, liens de chaque côté, bouton musique à droite
+         → Pour changer les liens de navigation : modifie les <a href="#...">
+           Le # doit correspondre au id="..." de la section ciblée
+    ═══════════════════════════════════════════ -->
+    <nav id="navbar">
+        <div class="nav-inner">
+
+            <!-- Liens à gauche du logo -->
+            <div class="nav-group nav-left">
+                <a href="#compteur">Ensemble</a>
+                <a href="#histoire">Histoire</a>
+            </div>
+
+            <!-- Logo central — Texte principal + sous-titre -->
+            <a href="#hero" class="nav-logo">
+                <span>JOSHIA</span><!-- ← Modifie le prénom ici -->
+                <small>10.02.2026</small><!-- ← Modifie l'âge et la date ici -->
+            </a>
+
+            <!-- Liens à droite du logo -->
+            <div class="nav-right-wrapper">
+                <div class="nav-group nav-right">
+                    <a href="#galerie">Photos</a>
+                    <a href="#pour-toi">Pour Toi</a>
+            </div>
+
+            <!-- Bouton musique (intégré dans la nav) -->
+            <button class="nav-music" id="music-btn" onclick="toggleMusic(event)" title="Musique">
+                <i class="fa-solid fa-music"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION HERO — PAGE D'ACCUEIL
+         → Première chose visible après l'intro du bouquet
+         → Côté gauche : texte (badge date, grand titre, nom, tagline)
+         → Côté droit : photo dans une forme blob organique
+    ═══════════════════════════════════════════ -->
+    <section class="hero" id="hero">
+
+        <!-- Petits symboles décoratifs qui flottent en arrière-plan
+             → Pour modifier les symboles : change les caractères (♡ ✦ ✿ ❀ ✧)
+             → Pour modifier leurs positions : see style.css → .f1 .f2 .f3... -->
+        <div class="hero-floats">
+            <span class="float f1">♡</span>
+            <span class="float f2">✦</span>
+            <span class="float f3">✿</span>
+            <span class="float f4">♡</span>
+            <span class="float f5">✧</span>
+            <span class="float f6">❀</span>
+            <span class="float f7">✦</span>
+            <span class="float f8">♡</span>
+        </div>
+
+        <!-- ─── CÔTÉ GAUCHE : TEXTE ─── -->
+        <div class="hero-text">
+
+            <!-- Badge date en haut du titre
+                 → Pour modifier la date : change le texte entre ✦ ... ✦ -->
+            <div class="hero-badge">✦ 10 Février 2026 ✦</div>
+
+            <!-- Grand titre principal
+                 → Pour modifier le texte : change les lignes entre <h1> et </h1>
+                 → Le texte en italique rose = la partie entre <em>...</em> -->
+            <h1 class="hero-title">
+                Joyeux<br>
+                <em>anniversaire,</em><br>
+                Chérie
+            </h1>
+
+            <!-- Nom complet en petites lettres sous le titre -->
+            <p class="hero-sub">Rakotonarivo Malalasoa Jemimah <strong>Joshia</strong></p>
+
+            <!-- Phrase d'accroche sous le nom -->
+            <p class="hero-tagline">Une journée spéciale pour une personne encore plus spéciale ♡</p>
+
+            <!-- Bouton qui scrolle vers la section suivante -->
+            <a href="#compteur" class="btn btn-dark hero-cta">Scrolleo fa misy tohiny <i class="fas fa-arrow-down"></i></a>
+        </div>
+
+        <!-- ─── CÔTÉ DROIT : PHOTO ─── -->
+        <div class="hero-visual">
+
+            <!-- Photo principale dans une forme blob animée
+                 → Pour changer la photo : modifie src="background.jpg"
+                 → La forme se déforme doucement en boucle (animation CSS "morph") -->
+            <div class="hero-blob">
+                <img src="background.jpg" alt="Photo">
+            </div>
+
+            <!-- Petits badges décoratifs autour de la photo
+                 → deco-1 = en haut à droite : symbole cœur
+                 → deco-2 = en bas à gauche : chiffre "21"
+                 → deco-3 = au milieu droite : étoile -->
+            <div class="hero-deco deco-1">❤</div>
+            <div class="hero-deco deco-2">21</div>
+            <div class="hero-deco deco-3">✦</div>
+        </div>
+
+       
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION COMPTEUR — TEMPS ÉCOULÉ DEPUIS LE DÉBUT
+         → Affiche les jours/heures/minutes/secondes depuis le 23 décembre 2024
+         → Le calcul se fait dans script.js → startDate
+         → Pour changer la date de départ : modifie dans script.js
+    ═══════════════════════════════════════════ -->
+    <section class="section s-light" id="compteur">
+
+        <!-- Vague décorative en haut de section -->
+        <div class="wave-top">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,40 C360,80 1080,0 1440,40 L1440,0 L0,0 Z" fill="#FFFCF5"/>
+            </svg>
+        </div>
+
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="s-header reveal">
+                <p class="s-label">♡ Petite Anecdote</p>
+                <h2>Ensemble depuis...</h2>
+                <!-- ↓ Pour changer la date affichée ici : modifie le texte entre <strong> -->
+                <p class="s-desc">Nous nous connaissons depuis le <strong>23 décembre 2024</strong></p>
+            </div>
+
+            <!-- Carte du compteur
+                 → Les valeurs sont mises à jour automatiquement par JavaScript
+                 → ids "days", "hours", "minutes", "seconds" = ciblés par script.js -->
+            <div class="countdown-card reveal">
+                <div class="cd-item">
+                    <span id="days" class="cd-num">00</span>
+                    <span class="cd-unit">Jours</span>
+                </div>
+                <span class="cd-sep">:</span>
+                <div class="cd-item">
+                    <span id="hours" class="cd-num">00</span>
+                    <span class="cd-unit">Heures</span>
+                </div>
+                <span class="cd-sep">:</span>
+                <div class="cd-item">
+                    <span id="minutes" class="cd-num">00</span>
+                    <span class="cd-unit">Minutes</span>
+                </div>
+                <span class="cd-sep">:</span>
+                <div class="cd-item">
+                    <span id="seconds" class="cd-num">00</span>
+                    <span class="cd-unit">Secondes</span>
+                </div>
+            </div>
+
+            <!-- Texte sous le compteur -->
+            <p class="cd-note reveal">✦ Et tout autant de moments précieux partagés ensemble ✦</p>
+        </div>
+
+        <!-- Vague décorative en bas de section -->
+        <div class="wave-bottom">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#FEF3F4"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION TIMELINE — NOTRE HISTOIRE
+         → Frise chronologique avec les moments clés
+         → Pour ajouter une étape : copie un bloc <div class="tl-item reveal">
+           et modifie la date, le titre et le texte
+         → tl-left = carte à gauche | tl-right = carte à droite (alternance)
+    ═══════════════════════════════════════════ -->
+    <section class="section s-pink" id="histoire">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="s-header reveal">
+                <p class="s-label">❀ Nos Souvenirs</p>
+                <h2>Notre Histoire</h2>
+                <p class="s-desc">Les moments qui définissent notre belle aventure</p>
+            </div>
+
+            <div class="timeline">
+
+                <!-- ── Étape 1 (carte à gauche) ── -->
+                <div class="tl-item reveal">
+                    <div class="tl-dot">✦</div><!-- ← Symbole dans le point de la timeline -->
+                    <div class="tl-card tl-left">
+                        <span class="tl-date">Décembre 2024</span><!-- ← Date affichée -->
+                        <h3>Le Début ✨</h3><!-- ← Titre de l'étape -->
+                        <p>Le 23 décembre 2024, notre histoire a commencé. Une date que je n'oublierai jamais.</p>
+                    </div>
+                </div>
+
+                <!-- ── Étape 2 (carte à droite) ── -->
+                <div class="tl-item reveal">
+                    <div class="tl-dot">♡</div>
+                    <div class="tl-card tl-right">
+                        <span class="tl-date">Janvier 2025</span>
+                        <h3>Les Premiers Moments 🌸</h3>
+                        <p>Les premiers rires, les premières conversations, les premiers souvenirs ensemble.</p>
+                    </div>
+                </div>
+
+                <!-- ── Étape 3 (carte à gauche) ── -->
+                <div class="tl-item reveal">
+                    <div class="tl-dot">❀</div>
+                    <div class="tl-card tl-left">
+                        <span class="tl-date">10 Février 2026</span><!-- ← Date d'anniversaire -->
+                        <h3>Tes 21 Ans 🎂</h3>
+                        <p>Un anniversaire spécial pour célébrer une personne encore plus spéciale.</p>
+                    </div>
+                </div>
+
+                <!-- ── Étape 4 (carte à droite) ── -->
+                <div class="tl-item reveal">
+                    <div class="tl-dot">✿</div>
+                    <div class="tl-card tl-right">
+                        <span class="tl-date">L'Avenir ✈</span>
+                        <h3>La Suite...</h3>
+                        <p>Encore plein de beaux moments à vivre ensemble, dont un voyage qu'on fera tqt 😊</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Vague décorative en bas -->
+        <div class="wave-bottom">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,30 C480,80 960,0 1440,50 L1440,80 L0,80 Z" fill="#FFFCF5"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION GALERIE — NOS PHOTOS
+         → 5 photos en aperçu style "polaroïd"
+         → Un clic sur un polaroïd ouvre la galerie complète
+         → Pour changer les photos en aperçu : modifie les src="..." des <img>
+    ═══════════════════════════════════════════ -->
+    <section class="section s-light" id="galerie">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="s-header reveal">
+                <p class="s-label">01. Sary</p>
+                <h2>Nos Photos</h2>
+                <p class="s-desc">Quelques beaux moments qui on l'espère vont s'agrandir</p>
+            </div>
+
+            <!-- Rangée de polaroïds
+                 → style="--r:Xdeg" = angle de rotation (ex: -4deg, 2deg, -2deg...)
+                 → <span> = légende sous la photo (texte ou symbole)
+                 → Pour changer une photo : modifie src="..." dans le <img>
+                 → Un clic sur un polaroïd ouvre la galerie complète (via JS) -->
+            <div class="polaroids reveal">
+
+                <div class="polaroid" style="--r:-4deg">
+                    <div class="pol-img"><img src="image%20site/1.jpg" alt=""></div>
+                    <span>❤</span><!-- ← Légende sous la photo -->
+                </div>
+
+                <div class="polaroid" style="--r:2deg">
+                    <div class="pol-img"><img src="image%20site/IMG_0753.jpg" alt=""></div>
+                    <span>Notre Moment</span>
+                </div>
+
+                <div class="polaroid" style="--r:-2deg">
+                    <div class="pol-img"><img src="image%20site/IMG_0830.JPG" alt=""></div>
+                    <span>✦</span>
+                </div>
+
+                <div class="polaroid" style="--r:3deg">
+                    <div class="pol-img"><img src="image%20site/att.Mpi3o_QvW7iMslNSXE3Eu-pfn2ke7OCCZgQynnWlAUM.jpg" alt=""></div>
+                    <span>Souvenirs</span>
+                </div>
+
+                <div class="polaroid" style="--r:-1deg">
+                    <div class="pol-img"><img src="image%20site/2.jpg" alt=""></div>
+                    <span>♡</span>
+                </div>
+            </div>
+
+            <!-- Bouton qui ouvre la galerie complète (overlay) -->
+            <div class="s-cta">
+                <button class="btn btn-outline" onclick="openOverlay('gallery')">
+                    Voir toutes les photos <i class="fas fa-images"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION POUR TOI — 3 CARTES SPÉCIALES
+         → Carte 1 : lien vers une chanson YouTube
+         → Carte 2 : enveloppe interactive qui ouvre le message
+         → Carte 3 : infos anniversaire (date + message automatique)
+    ═══════════════════════════════════════════ -->
+    <section class="section s-yellow" id="pour-toi">
+
+        <!-- Vague décorative en haut -->
+        <div class="wave-top">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,50 C480,0 960,80 1440,30 L1440,0 L0,0 Z" fill="#FFFCF5"/>
+            </svg>
+        </div>
+
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="s-header reveal">
+                <p class="s-label">✦ Pour Toi</p>
+                <h2>Quelque Chose de Spécial</h2>
+            </div>
+
+            <div class="cards-row">
+
+               
+                <!-- ─── CARTE 1 : LA CHANSON ─── -->
+                <div class="feat-card reveal">
+                    <div class="card-tag">02. Hira</div>
+                    <h3>Notre Chanson</h3>
+                    <p>Une chanson qui me fait penser à toi</p>
+                    
+                    <a href="https://www.youtube.com/watch?v=NaZznqme2hg" target="_blank" class="video-link-container">
+                        <img src="https://img.youtube.com/vi/NaZznqme2hg/hqdefault.jpg" alt="Notre Chanson">
+                        
+                        <div class="play-overlay">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </a>
+                </div>
+        
+
+                <!-- ─── CARTE 2 : L'ENVELOPPE / MESSAGE ─── -->
+                <!-- Cliquer sur l'enveloppe l'ouvre (animation), puis le message s'affiche -->
+                <div class="feat-card reveal" id="envelopeCard">
+                    <div class="card-tag">03. Teny kely</div>
+                    <div class="envelope-wrap" onclick="openEnvelope()"><!-- ← onclick = déclenche l'animation -->
+                        <div class="envelope" id="envelope">
+                            <div class="env-flap"></div><!-- Le rabat de l'enveloppe -->
+                            <div class="env-body">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                        </div>
+                        <p class="env-hint">Clique pour ouvrir ✦</p>
+                    </div>
+                    <h3>Un Petit Mot</h3>
+                    <p>Efa fantatrao mo ty texte fa tiako averina kely</p>
+                </div>
+
+                <!-- ─── CARTE 3 : ANNIVERSAIRE ─── -->
+                <!-- Le message s'affiche automatiquement selon la date actuelle -->
+                <div class="feat-card reveal">
+                    <div class="card-tag">Spécial ✨</div>
+                    <div class="card-icon card-yellow"><i class="fas fa-birthday-cake"></i></div>
+                    <h3>Ton Anniversaire</h3>
+                    <!-- ↓ Pour changer la date affichée : modifie le texte ici -->
+                    <p>10 Février 2026</p>
+                    <!-- Ce div est rempli automatiquement par JavaScript (script.js) -->
+                    <div id="bday-display" class="bday-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vague décorative en bas -->
+        <div class="wave-bottom">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,40 C360,80 1080,0 1440,50 L1440,80 L0,80 Z" fill="#FEF3F4"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION QUALITÉS — TES QUALITÉS
+         → Badges avec les qualités mentionnées dans le message
+         → Pour ajouter une qualité : copie un <div class="badge-item reveal">
+         → Pour modifier : change le texte et l'emoji
+    ═══════════════════════════════════════════ -->
+    <section class="section s-pink" id="qualites">
+        <div class="container">
+
+            <!-- En-tête de section -->
+            <div class="s-header reveal">
+                <p class="s-label">❤ Ce que j'aime en toi</p>
+                <h2>Tes Qualités</h2>
+                <p class="s-desc">Et j'en oublie encore...</p>
+            </div>
+
+            <!-- Grille de badges
+                 → Chaque badge = <div class="badge-item reveal"><span>EMOJI</span> Texte</div>
+                 → Pour ajouter un badge : copie une ligne et modifie l'emoji + texte -->
+            <div class="badges-grid">
+                <div class="badge-item reveal"><span>✨</span> Gentille</div>
+                <div class="badge-item reveal"><span>💫</span> Intelligente</div>
+                <div class="badge-item reveal"><span>🌸</span> Tsara Goût</div>
+                <div class="badge-item reveal"><span>⭐</span> Hendry</div>
+                <div class="badge-item reveal"><span>🎵</span> Mahay Mandihy</div>
+                <div class="badge-item reveal"><span>💎</span> Manja Be</div>
+                <div class="badge-item reveal"><span>🌟</span> Te Hivoatra</div>
+                <div class="badge-item reveal"><span>✦</span> Unique</div>
+                <div class="badge-item reveal"><span>🫀</span> Toujours Là</div>
+                <div class="badge-item reveal"><span>🌺</span> Belle Âme</div>
+            </div>
+        </div>
+
+        <!-- Vague vers le footer sombre -->
+        <div class="wave-bottom">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,50 C480,0 960,80 1440,30 L1440,80 L0,80 Z" fill="#1C1C2E"/>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         FOOTER — BAS DE PAGE
+         → Fond sombre avec logo, date et signature
+         → Pour modifier le prénom : change "JOSHIA"
+         → Pour modifier la signature : change "Mahery"
+    ═══════════════════════════════════════════ -->
+    <footer>
+        <div class="footer-inner">
+            <!-- Cœurs animés décoratifs -->
+            <div class="footer-hearts-row">
+                <span class="fh">♡</span>
+                <span class="fh">♡</span>
+                <span class="fh">♡</span>
+            </div>
+
+            <p class="footer-logo">JOSHIA</p><!-- ← Modifie le prénom ici -->
+            <p class="footer-sub">21 ans · 10 Février 2026</p><!-- ← Modifie l'âge et la date ici -->
+            <p class="footer-credit">Fait avec amour par <strong>Mahery</strong></p><!-- ← Modifie le prénom ici -->
+        </div>
+    </footer>
+
+
+    <!-- ══════════════════════════════════════════
+         OVERLAY GALERIE — FENÊTRE PHOTOS COMPLÈTE
+         → S'ouvre quand on clique "Voir toutes les photos"
+         → Pour ajouter une photo : copie une ligne <div class="photo-item">
+           et modifie le chemin dans src="..."
+         → Pour supprimer une photo : supprime la ligne <div class="photo-item">
+         → Les photos s'ouvrent en grand dans le lightbox au clic
+    ═══════════════════════════════════════════ -->
+    <div id="overlay-gallery" class="overlay">
+        <!-- Bouton fermer (croix) en haut à droite -->
+        <button class="ov-close" onclick="closeOverlay('gallery')"><i class="fas fa-times"></i></button>
+        <div class="ov-content">
+            <h2 class="ov-title">Nos Photos ♡</h2>
+            <div class="gallery-grid">
+                <!-- ↓ Chaque ligne = une photo dans la galerie -->
+                <!-- Pour changer une photo : modifie src="..." -->
+                <!-- Pour supprimer une photo : supprime toute la ligne <div class="photo-item"> -->
+                <div class="photo-item"><img src="image%20site/1.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/2.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/3.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/4.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG_0753.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG_0754.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG_0756.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG_0830.JPG" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG_0979.JPG" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG-20250107-WA0024.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG-20250107-WA0025.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/IMG-20250107-WA0026.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/50a699d9-e119-4392-8cdb-d5d146810ec6.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.sBaKtnkjRLsDbU9sQ96pkvLfANzHvXSwdVDJRN2v5z4.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.WEnx8pBhn8KtxzbwY5yuiJi4tP9deYUsKpvaHxaj7NQ.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.AG3Ze-ju15YHNjAZ2oczQ5R0d86TU3Rm04DM9uKm8Ck.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.eS3S3136397TesPNa-4LZt8oAPOHyWcmf7Xmq4MEquM.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.DainE1OluWGFW7P_YmfU1_dTz8il9-RQcThG851zIRI.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.djIY30i90miKrv6wGX7MfJ8Fa_WVielnFsw-2M1-SCs.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.dTHsVgkYHGeHiRbVmqUGQj6XviBNwUboVTCNzjfD7PQ.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.FXZjjSn51NjK64VHBzjUjmkYmV0gdW9iCnzbboYkvIc.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.Ge5fiHi7LtY8R28vJYwWavmH1DN1spR0hKRA8isTJrQ.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.GUcri_jQL0WqMPWG8ZM5zeIDvXU-0h9YVGA5Il2cDww.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.l9OFREl5xwsnJ36Cfcrd73XzMYNYPzIMYEn1RjKFiTY.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.L9WGDHeAEWFg5liRhaFb1MDS6K0jrPEIBbH1GMDRpaA.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.lkJqDbZJ7bfUeXf6Kk4VZY41PtdMPjUKyTGxoJj1EfU.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.Mpi3o_QvW7iMslNSXE3Eu-pfn2ke7OCCZgQynnWlAUM.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.oXf80puGMExnEEUDa_DvBmmrE0c16nBxYecEWbC6-ds.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.pCh2Aeqqf2X1oshRdgHtRhQSRbZyZTdhRrsDO_vkaLA.jpg" onclick="openLightbox(this.src)" alt=""></div>
+                <div class="photo-item"><img src="image%20site/att.YpDoAzsyMsLxu0HdW44S7Re115Gwq55eVfiqtUlPEVI.jpg" onclick="openLightbox(this.src)" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         OVERLAY MESSAGE — LA LETTRE
+         → S'ouvre quand on clique sur l'enveloppe
+         → Pour modifier le message : change le texte dans les balises <p>
+         → Pour modifier la signature : change "Mahery" dans .note-sig
+    ═══════════════════════════════════════════ -->
+    <div id="overlay-note" class="overlay">
+        <!-- Bouton fermer (croix) -->
+        <button class="ov-close" onclick="closeOverlay('note')"><i class="fas fa-times"></i></button>
+        <div class="ov-content">
+            <div class="note-card">
+
+                <!-- Guillemet décoratif -->
+                <i class="fas fa-quote-left note-quote"></i>
+
+                <!-- ↓ DÉBUT DU MESSAGE — Modifie le texte ici ↓ -->
+                <p class="note-greeting">Malalasoa,</p><!-- ← Modifie le prénom ici -->
+
+                <p>Tsy maintsy mlay ty androany ty fa on a que 21 ans une fois donc il faut profiter. Tu mérites vraiment de passer une bonne journée.</p>
+
+                <p>On se connaît depuis un peu plus d'un an fa c'est comme c'était tu étais toujours là pour moi. Quand je pense à toi je pense à de nombreuses qualités (gentille, te hivoatra, hendry tsara, mahay mandihy, manja be, tsara goût, intelligente,…) na de tsy tsapanao arany zan'ny.</p>
+
+                <p>Zay marina no tiako tsapanao amin'ny ty 21 ans ty: mila tsapanao hoe manana qualité sy valeur tsara enao de tsy maintsy lasa lavitra fa aza adino zay rehefa sendra misy olana. Ny tena mety zao de hoe manao voyage tsika hoe atao cadeau fa mbola tsy maharaka ny volanay fa un jour on le fera tqt ra tsy hoe leo ana enao😂</p>
+
+                <!-- Phrase de fin (style italique) -->
+                <p class="note-end">Je t'aime plus que tout.<br>Bisous be. 💕</p>
+                <!-- ↑ FIN DU MESSAGE ↑ -->
+
+                <!-- Signature avec cœurs -->
+                <div class="note-sig">
+                    <i class="fas fa-heart"></i>
+                    <span>— Mahery —</span><!-- ← Modifie le prénom ici -->
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         LIGHTBOX — VISIONNEUSE DE PHOTOS EN GRAND
+         → S'ouvre quand on clique sur une photo dans la galerie
+         → Se ferme en cliquant n'importe où, ou appuyant sur Echap
+         → Ne pas modifier ce bloc
+    ═══════════════════════════════════════════ -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         SCRIPTS JAVASCRIPT (bibliothèques externes)
+         → canvas-confetti : les confettis au chargement
+         → gsap : bibliothèque d'animations
+         → ScrollTrigger : animations au scroll
+         → script.js : notre propre code JavaScript
+         → NE PAS MODIFIER ces balises <script>
+    ═══════════════════════════════════════════ -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

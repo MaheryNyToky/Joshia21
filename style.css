@@ -1,0 +1,1416 @@
+/* =============================================
+   JOSHIA 21 ANS — Style inspiré de beeit.it
+   =============================================
+
+   STRUCTURE DE CE FICHIER :
+   1.  Variables (couleurs, tailles, effets)
+   2.  Reset & Base
+   3.  Barre de progression
+   4.  Intro (bouquet)
+   5.  Navigation
+   6.  Section Hero
+   7.  Boutons
+   8.  Styles partagés (sections, container, reveal)
+   9.  Section Compteur
+   10. Section Timeline
+   11. Section Polaroïds / Galerie
+   12. Section "Pour Toi" (cartes)
+   13. Section Qualités (badges)
+   14. Footer
+   15. Overlays (galerie + message)
+   16. Lightbox
+   17. Étincelles au clic
+   18. Responsive (mobile)
+   ============================================= */
+
+
+/* ═══════════════════════════════════════════
+   1. VARIABLES — PALETTE DE COULEURS & TAILLES
+   ═══════════════════════════════════════════
+   → Pour changer les couleurs du site, modifie les valeurs ici.
+   → Ces variables sont réutilisées partout dans le CSS avec var(--nom).
+
+   COULEURS PRINCIPALES :
+   --bg         = fond principal (blanc crème)
+   --bg-pink    = fond des sections roses (rose très pâle)
+   --bg-yellow  = fond des sections jaunes (crème jaune)
+   --pink       = rose principal (pour les accents)
+   --pink-dark  = rose foncé (pour les textes sur fond clair)
+   --yellow     = jaune miel (couleur secondaire)
+   --dark       = couleur sombre (titres, footer, boutons noirs)
+   --text       = couleur du texte principal
+   --text-mid   = texte secondaire (moins important)
+   --text-light = texte très discret (labels, hints)
+   --white      = blanc pur
+
+   EFFETS :
+   --shadow     = ombre portée légère
+   --shadow-md  = ombre portée plus marquée (au survol)
+   --r          = rayon des coins arrondis des cartes (20px)
+   --nav-h      = hauteur de la barre de navigation
+   --ease       = courbe d'accélération des animations
+   ════════════════════════════════════════════ */
+:root {
+    /* ↓ Modifie ces valeurs pour changer les couleurs */
+    --bg:        #FFFCF5;   /* Fond principal — blanc crème chaud */
+    --bg-pink:   #FEF3F4;   /* Fond sections roses — rose très pâle */
+    --bg-yellow: #FFFBEF;   /* Fond sections jaunes — crème doux */
+    --pink:      #F0A7AF;   /* Rose principal */
+    --pink-dark: #D4747E;   /* Rose foncé (textes, liens actifs) */
+    --yellow:    #F5E0A0;   /* Jaune miel */
+    --yellow-dark: #C89A10; /* Jaune foncé (icônes jaunes) */
+    --dark:      #1C1C2E;   /* Sombre (titres, footer, boutons) */
+    --text:      #2C2C3E;   /* Texte principal */
+    --text-mid:  #5A5A7A;   /* Texte secondaire */
+    --text-light:#9090AA;   /* Texte discret (labels, placeholders) */
+    --white:     #FFFFFF;   /* Blanc pur */
+
+    /* Ombres portées */
+    --shadow:    0 4px 24px rgba(200,120,130,0.10);  /* Ombre légère */
+    --shadow-md: 0 10px 40px rgba(200,120,130,0.18); /* Ombre marquée */
+
+    /* Formes et animations */
+    --r:    20px;   /* Rayon des coins arrondis des cartes */
+    --nav-h: 72px; /* Hauteur de la barre de navigation */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1); /* Courbe d'animation */
+}
+
+/* ═══════════════════════════════════════════
+   2. RESET & BASE
+   ═══════════════════════════════════════════
+   → Styles de base appliqués à toute la page
+   → Ne pas modifier cette section sauf si tu sais ce que tu fais
+   ════════════════════════════════════════════ */
+
+/* Supprime les marges/paddings par défaut du navigateur */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Défilement fluide lors des clics sur les liens d'ancrage (#section) */
+html { scroll-behavior: smooth; }
+
+/* Style de base de la page */
+body {
+    background: var(--bg);         /* Couleur de fond */
+    color: var(--text);            /* Couleur du texte */
+    font-family: 'Inter', sans-serif; /* Police par défaut */
+    font-size: 16px;
+    line-height: 1.6;              /* Espacement entre les lignes */
+    overflow-x: hidden;            /* Empêche le défilement horizontal */
+}
+
+img { display: block; max-width: 100%; } /* Les images ne débordent pas de leur conteneur */
+
+a { text-decoration: none; color: inherit; } /* Liens sans soulignement */
+
+/* Titres en Playfair Display (serif élégant) */
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dark);
+    line-height: 1.2;
+}
+
+/* ═══════════════════════════════════════════
+   3. BARRE DE PROGRESSION
+   ═══════════════════════════════════════════
+   → Ligne fine en haut de page qui se remplit en scrollant
+   → Pour changer les couleurs du dégradé : modifie les couleurs dans "background"
+   → Pour changer l'épaisseur : modifie "height" (ex: 4px pour plus épais)
+   ════════════════════════════════════════════ */
+.progress-bar {
+    position: fixed;           /* Fixée tout en haut */
+    top: 0; left: 0;
+    height: 3px;               /* ← Épaisseur de la barre */
+    width: 0%;                 /* Largeur mise à jour par JavaScript */
+    background: linear-gradient(90deg, var(--pink), var(--yellow)); /* ← Couleurs du dégradé */
+    z-index: 9999;             /* Au-dessus de tout */
+    transition: width 0.1s linear;
+}
+.nav-right-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 32px; /* Garde le même espacement que le reste */
+}
+
+/* ═══════════════════════════════════════════
+   4. INTRO — ANIMATION DU BOUQUET
+   ═══════════════════════════════════════════
+   → Plein écran au chargement de la page
+   → L'animation (apparition + disparition) est gérée par GSAP dans script.js
+   → Ne pas modifier ces styles
+   ════════════════════════════════════════════ */
+#intro-bouquet {
+    position: fixed;
+    inset: 0;                  /* Couvre tout l'écran */
+    background: var(--bg);     /* Fond crème (même couleur que la page) */
+    z-index: 9998;             /* Juste sous la barre de progression */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bouquet-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;       /* L'image entière est visible sans être coupée */
+    opacity: 0;                /* Invisible au départ — GSAP l'anime à opacity: 1 */
+    transform: scale(0.8);     /* Légèrement réduite au départ */
+}
+
+/* ═══════════════════════════════════════════
+   5. NAVIGATION
+   ═══════════════════════════════════════════
+   → Barre fixée en haut, transparente au départ
+   → Devient blanche/floue quand on scrolle (classe .scrolled ajoutée par JS)
+   → Pour changer la hauteur : modifie --nav-h dans les variables (section 1)
+   ════════════════════════════════════════════ */
+#navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);      /* Hauteur définie par la variable --nav-h */
+    z-index: 500;
+    transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+/* État après scroll : fond blanc translucide avec flou (effet "verre") */
+#navbar.scrolled {
+    background: rgba(255,252,245,0.92); /* ← Opacité du fond (0 à 1) */
+    backdrop-filter: blur(12px);        /* ← Intensité du flou derrière */
+    box-shadow: 0 1px 20px rgba(200,120,130,0.12);
+}
+
+.nav-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: relative;
+}
+
+.nav-group {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.nav-group a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    transition: color 0.25s;
+    position: relative;
+}
+
+.nav-group a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--pink-dark);
+    transition: width 0.3s var(--ease);
+}
+
+.nav-group a:hover { color: var(--dark); }
+.nav-group a:hover::after { width: 100%; }
+
+.nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+}
+
+.nav-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--dark);
+}
+
+.nav-logo small {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--pink-dark);
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.nav-music {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--pink);
+    background: transparent;
+    color: var(--pink-dark);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+}
+
+.nav-music:hover,
+.nav-music.playing {
+    background: var(--pink);
+    color: var(--white);
+    border-color: var(--pink);
+}
+
+.nav-music.playing {
+    animation: pulse-nav 2s infinite;
+}
+
+@keyframes pulse-nav {
+    0%   { box-shadow: 0 0 0 0   rgba(240,167,175,0.7); }
+    70%  { box-shadow: 0 0 0 10px rgba(240,167,175,0); }
+    100% { box-shadow: 0 0 0 0   rgba(240,167,175,0); }
+}
+
+/* ═══════════════════════════════════════════
+   6. SECTION HERO
+   ═══════════════════════════════════════════
+   → Première section visible, plein écran
+   → Mise en page côte à côte : texte (gauche) + blob photo (droite)
+   → Sur mobile : empilé verticalement
+   → Les éléments sont invisibles au départ et animés par GSAP (script.js)
+   ════════════════════════════════════════════ */
+.hero {
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--nav-h) + 40px) 6% 60px;
+    gap: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Floating decorative text characters */
+.hero-floats { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+.float {
+    position: absolute;
+    font-size: 1.4rem;
+    color: var(--pink);
+    opacity: 0.25;
+    animation: floatAnim 6s ease-in-out infinite;
+}
+
+.f1  { top: 15%; left: 8%;  animation-delay: 0s;   animation-duration: 7s; }
+.f2  { top: 25%; left: 92%; animation-delay: 1s;   color: var(--yellow-dark); opacity: 0.3; }
+.f3  { top: 70%; left: 5%;  animation-delay: 2s;   animation-duration: 8s; }
+.f4  { top: 80%; left: 90%; animation-delay: 0.5s; animation-duration: 6s; }
+.f5  { top: 10%; left: 50%; animation-delay: 1.5s; font-size: 1rem; opacity: 0.2; }
+.f6  { top: 55%; left: 88%; animation-delay: 3s;   animation-duration: 9s; }
+.f7  { top: 40%; left: 2%;  animation-delay: 2.5s; color: var(--yellow-dark); }
+.f8  { top: 88%; left: 45%; animation-delay: 0.8s; }
+
+@keyframes floatAnim {
+    0%, 100% { transform: translateY(0)   rotate(0deg); }
+    33%       { transform: translateY(-15px) rotate(5deg); }
+    66%       { transform: translateY(8px)  rotate(-3deg); }
+}
+
+/* Hero text side */
+.hero-text {
+    flex: 1;
+    max-width: 520px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink-dark);
+    background: var(--bg-pink);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    opacity: 0;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.hero-title em {
+    font-style: italic;
+    color: var(--pink-dark);
+    font-weight: 600;
+}
+
+.hero-sub {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-mid);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0;
+}
+
+.hero-sub strong {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.hero-tagline {
+    font-size: 1rem;
+    color: var(--text-mid);
+    margin-bottom: 36px;
+    font-style: italic;
+    opacity: 0;
+}
+
+.hero-cta { opacity: 0; }
+
+/* Hero visual side */
+.hero-visual {
+    flex: 1;
+    max-width: 440px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-blob {
+    width: 380px;
+    height: 460px;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    overflow: hidden;
+    animation: morph 10s ease-in-out infinite;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+}
+
+.hero-blob img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 8s ease;
+}
+
+.hero-blob:hover img { transform: scale(1.05); }
+
+@keyframes morph {
+    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    25%       { border-radius: 40% 60% 70% 30% / 50% 40% 60% 50%; }
+    50%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    75%       { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; }
+}
+
+/* Floating deco badges around the blob */
+.hero-deco {
+    position: absolute;
+    background: var(--white);
+    border-radius: 100px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: transform 0.3s;
+}
+
+.deco-1 {
+    top: 8%; right: -10%;
+    font-size: 1.4rem;
+    padding: 10px 14px;
+    color: var(--pink-dark);
+    animation: float-deco 5s ease-in-out infinite;
+}
+
+.deco-2 {
+    bottom: 10%; left: -8%;
+    font-size: 1.8rem;
+    padding: 12px 20px;
+    color: var(--dark);
+    animation: float-deco 6s ease-in-out infinite 0.5s;
+}
+
+.deco-3 {
+    top: 50%; right: -12%;
+    font-size: 1rem;
+    padding: 8px 12px;
+    color: var(--yellow-dark);
+    animation: float-deco 7s ease-in-out infinite 1s;
+}
+
+@keyframes float-deco {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-12px); }
+}
+
+/* Scroll hint */
+.hero-scroll {
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: bounce-scroll 2.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+.hero-scroll span {
+    font-size: 0.65rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+.scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--pink), transparent);
+}
+
+@keyframes bounce-scroll {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* ═══════════════════════════════════════════
+   7. BOUTONS
+   ═══════════════════════════════════════════
+   → Deux variantes : .btn-dark (sombre) et .btn-outline (contour)
+   → Pour changer la taille des boutons : modifie "padding" dans .btn
+   → Pour changer la police des boutons : modifie "font-size" dans .btn
+   ════════════════════════════════════════════ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s var(--ease);
+}
+
+.btn-dark {
+    background: var(--dark);
+    color: var(--white);
+}
+
+.btn-dark:hover {
+    background: #2e2e50;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(28,28,46,0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--dark);
+    border: 1.5px solid var(--dark);
+}
+
+.btn-outline:hover {
+    background: var(--dark);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════
+   8. STYLES PARTAGÉS — SECTIONS & CONTENEURS
+   ═══════════════════════════════════════════
+   → .section       : style de base de toutes les sections
+   → .s-light       : fond blanc crème (sections claires)
+   → .s-pink        : fond rose pâle
+   → .s-yellow      : fond crème jaune
+   → .container     : limite la largeur et centre le contenu
+   → .wave-top/.wave-bottom : vagues SVG de transition entre sections
+   → .s-header      : en-tête centré de section (label + h2 + description)
+   → .reveal        : élément invisible qui apparaît au scroll (via IntersectionObserver JS)
+   ════════════════════════════════════════════ */
+.section {
+    position: relative;
+    padding: 80px 0;
+    overflow: hidden;
+}
+
+.s-light  { background: var(--bg); }
+.s-pink   { background: var(--bg-pink); }
+.s-yellow { background: var(--bg-yellow); }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+/* Wave dividers */
+.wave-top,
+.wave-bottom {
+    position: relative;
+    left: 0; right: 0;
+    width: 100%;
+    line-height: 0;
+}
+
+.wave-top  { margin-top: -2px; }
+.wave-bottom { margin-bottom: -2px; }
+.wave-top svg,
+.wave-bottom svg { width: 100%; height: 60px; display: block; }
+
+/* Section header */
+.s-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.s-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink-dark);
+    margin-bottom: 12px;
+}
+
+.s-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.s-desc {
+    font-size: 1rem;
+    color: var(--text-mid);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Scroll reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   9. COMPTEUR — "ENSEMBLE DEPUIS..."
+   ═══════════════════════════════════════════
+   → Grande carte blanche avec les chiffres jours/heures/min/sec
+   → .cd-num   : les grands chiffres (police Playfair Display)
+   → .cd-unit  : les labels sous les chiffres (JOURS, HEURES...)
+   → .cd-sep   : les ":" de séparation entre les blocs
+   → .cd-num.tick : animation de rebond quand la valeur change (via JS)
+   → Pour changer la taille des chiffres : modifie font-size dans .cd-num
+   ════════════════════════════════════════════ */
+.countdown-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 48px 60px;
+    box-shadow: var(--shadow-md);
+    max-width: 700px;
+    margin: 0 auto 32px;
+}
+
+.cd-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 80px;
+}
+
+.cd-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1;
+    transition: transform 0.15s;
+}
+
+.cd-num.tick { transform: scale(1.15); }
+
+.cd-unit {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--pink-dark);
+}
+
+.cd-sep {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--pink);
+    align-self: flex-start;
+    margin-top: 4px;
+}
+
+.cd-note {
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════
+   10. TIMELINE — "NOTRE HISTOIRE"
+   ═══════════════════════════════════════════
+   → Frise verticale avec une ligne au centre
+   → .tl-item  : une ligne de la frise (dot + carte)
+   → .tl-dot   : cercle avec symbole au centre de la ligne
+   → .tl-card  : carte blanche avec la date, titre et texte
+   → .tl-left  : carte positionnée à gauche de la ligne
+   → .tl-right : carte positionnée à droite de la ligne
+   → Sur mobile : tout s'empile à gauche (timeline::before passe à gauche: 20px)
+   ════════════════════════════════════════════ */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--pink), var(--yellow), var(--pink), transparent);
+    transform: translateX(-50%);
+}
+
+.tl-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.tl-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px; height: 44px;
+    background: var(--white);
+    border: 2px solid var(--pink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(240,167,175,0.3);
+    transition: transform 0.3s;
+}
+
+.tl-item:hover .tl-dot { transform: translateX(-50%) scale(1.15); }
+
+.tl-card {
+    width: 44%;
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.tl-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.tl-left  { margin-right: auto; margin-left: 0; }
+.tl-right { margin-left: auto; margin-right: 0; }
+
+.tl-date {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--pink-dark);
+    background: var(--bg-pink);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+}
+
+.tl-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.tl-card p {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════
+   11. POLAROÏDS & GALERIE
+   ═══════════════════════════════════════════
+   → .polaroids : rangée de photos style polaroïd
+   → .polaroid  : chaque polaroïd (fond blanc, padding, légende en bas)
+     → La rotation est définie par la variable CSS --r (ex: style="--r:-4deg")
+     → Au survol : se redresse et grossit légèrement
+   → .pol-img   : zone de la photo (dimensions fixes)
+   → .s-cta     : zone du bouton "Voir toutes les photos" (centré)
+   ════════════════════════════════════════════ */
+.polaroids {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+}
+
+.polaroid {
+    background: var(--white);
+    padding: 12px 12px 36px;
+    border-radius: 4px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+    transform: rotate(var(--r, 0deg));
+    transition: transform 0.35s var(--ease), box-shadow 0.35s;
+    cursor: pointer;
+    max-width: 180px;
+}
+
+.polaroid:hover {
+    transform: rotate(0deg) scale(1.05) translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+.pol-img {
+    width: 156px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.pol-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.polaroid:hover .pol-img img { transform: scale(1.08); }
+
+.polaroid span {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--text-mid);
+}
+
+.s-cta { text-align: center; }
+
+/* ═══════════════════════════════════════════
+   12. CARTES "POUR TOI"
+   ═══════════════════════════════════════════
+   → .cards-row    : rangée de 3 cartes côte à côte
+   → .feat-card    : chaque carte (fond blanc, coins arrondis, ombre)
+     → Au survol : remonte légèrement (translateY -6px)
+   → .card-tag     : petit badge en haut à gauche de chaque carte
+   → .card-icon    : icône ronde (rose ou jaune selon la carte)
+   → .card-pink    : variante rose de l'icône
+   → .card-yellow  : variante jaune de l'icône
+
+   ENVELOPPE :
+   → .envelope-wrap : conteneur cliquable de l'enveloppe
+   → .envelope      : l'enveloppe elle-même (rabat + corps)
+   → .env-flap      : le rabat triangulaire du dessus
+   → .envelope.open : quand on clique, le rabat se retourne (rotateX)
+   → .env-body      : le corps de l'enveloppe (avec l'icône cœur)
+
+   CARTE ANNIVERSAIRE :
+   → .bday-msg : message automatique généré par JavaScript
+   ════════════════════════════════════════════ */
+.cards-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.feat-card {
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 36px 28px 32px;
+    box-shadow: var(--shadow);
+    max-width: 320px;
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    position: relative;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s;
+}
+/* Intégration Vidéo YouTube */
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Garde le format 16:9 parfait */
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+    box-shadow: var(--shadow);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.feat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-tag {
+    position: absolute;
+    top: 18px; left: 18px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    background: var(--bg);
+    padding: 3px 10px;
+    border-radius: 100px;
+}
+
+.card-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-top: 16px;
+}
+
+.card-pink   { background: var(--bg-pink);   color: var(--pink-dark); }
+.card-yellow { background: var(--bg-yellow); color: var(--yellow-dark); }
+
+.feat-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.feat-card p {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    flex: 1;
+}
+
+/* Envelope */
+.envelope-wrap {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+.envelope {
+    width: 80px; height: 56px;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.envelope-wrap:hover .envelope { transform: scale(1.08); }
+
+.env-flap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: var(--pink);
+    clip-path: polygon(0 0, 50% 80%, 100% 0);
+    border-radius: 4px 4px 0 0;
+    transform-origin: top;
+    transition: transform 0.5s var(--ease);
+}
+
+.envelope.open .env-flap {
+    transform: rotateX(180deg);
+}
+
+.env-body {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80%;
+    background: var(--bg-pink);
+    border-radius: 2px 2px 6px 6px;
+    border: 1.5px solid var(--pink);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--pink-dark);
+    font-size: 1.2rem;
+}
+
+.env-hint {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    letter-spacing: 1px;
+}
+
+/* Birthday msg */
+.bday-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--pink-dark);
+    text-align: center;
+    padding: 12px 16px;
+    background: var(--bg-pink);
+    border-radius: 12px;
+    line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   13. BADGES — "TES QUALITÉS"
+   ═══════════════════════════════════════════
+   → .badges-grid : grille flexible de badges centrés
+   → .badge-item  : chaque badge (fond blanc, coins 100px = pilule)
+     → Pour changer la taille : modifie padding et font-size
+     → Pour changer la couleur de fond : modifie background
+     → Au survol : remonte et grossit légèrement
+   ════════════════════════════════════════════ */
+.badges-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.badge-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--white);
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--dark);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
+    cursor: default;
+}
+
+.badge-item:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: var(--shadow-md);
+}
+
+.badge-item span { font-size: 1.1rem; }
+
+/* ═══════════════════════════════════════════
+   14. FOOTER — BAS DE PAGE
+   ═══════════════════════════════════════════
+   → Fond sombre (var(--dark) = #1C1C2E)
+   → .footer-inner     : contenu centré avec flex colonne
+   → .footer-hearts-row : rangée de 3 cœurs animés
+   → .fh               : chaque cœur (animé individuellement avec décalage)
+   → .footer-logo      : grand texte JOSHIA en Playfair Display
+   → .footer-sub       : sous-titre (âge + date)
+   → .footer-credit    : signature "Fait avec amour par Mahery"
+   ════════════════════════════════════════════ */
+footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    position: relative;
+}
+
+.footer-inner {
+    padding: 60px 40px 50px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-hearts-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.fh {
+    font-size: 1.2rem;
+    color: var(--pink);
+    animation: float-deco 4s ease-in-out infinite;
+}
+
+.fh:nth-child(2) { animation-delay: 0.5s; }
+.fh:nth-child(3) { animation-delay: 1s; }
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--white);
+}
+
+.footer-sub {
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--pink);
+}
+
+.footer-credit {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 8px;
+}
+
+.footer-credit strong { color: rgba(255,255,255,0.7); }
+
+/* ═══════════════════════════════════════════
+   15. OVERLAYS — FENÊTRES GALERIE & MESSAGE
+   ═══════════════════════════════════════════
+   → Fenêtres plein écran qui s'ouvrent par-dessus la page
+   → .overlay         : base (invisible par défaut)
+   → .overlay.active  : visible (ajouté par JavaScript via openOverlay())
+   → .ov-close        : bouton croix pour fermer (fixé en haut à droite)
+   → .ov-content      : contenu centré avec padding
+   → .ov-title        : titre de l'overlay
+
+   GALERIE :
+   → .gallery-grid   : grille responsive de photos
+   → .photo-item     : chaque photo (ratio 1:1, coins arrondis)
+     → Au clic : ouvre le lightbox (openLightbox)
+     → Au survol : zoom léger
+
+   MESSAGE :
+   → .note-card      : carte blanche avec le texte de la lettre
+   → .note-quote     : guillemet décoratif rose en haut
+   → .note-greeting  : premier paragraphe (prénom, style titrage)
+   → .note-end       : phrase de fin (italique, plus grand)
+   → .note-sig       : signature avec cœurs de chaque côté
+   ════════════════════════════════════════════ */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,252,245,0.97);
+    z-index: 800;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s var(--ease), visibility 0.4s;
+    overflow-y: auto;
+    backdrop-filter: blur(6px);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ov-close {
+    position: fixed;
+    top: 24px; right: 28px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--dark);
+    color: var(--white);
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    z-index: 801;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.ov-close:hover { transform: scale(1.1) rotate(90deg); background: var(--pink-dark); }
+
+.ov-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px 40px 60px;
+}
+
+.ov-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--dark);
+}
+
+/* Gallery grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.photo-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+.photo-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(28,28,46,0);
+    transition: background 0.3s;
+}
+
+.photo-item:hover::after {
+    background: rgba(28,28,46,0.1);
+}
+
+.photo-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease);
+}
+
+.photo-item:hover img { transform: scale(1.06); }
+
+/* Note card */
+.note-card {
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 60px;
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-md);
+    line-height: 1.9;
+}
+
+.note-quote {
+    font-size: 2rem;
+    color: var(--pink);
+    margin-bottom: 24px;
+    display: block;
+}
+
+.note-greeting {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 20px !important;
+}
+
+.note-card p {
+    font-size: 1rem;
+    color: var(--text-mid);
+    margin-bottom: 20px;
+}
+
+.note-end {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem !important;
+    color: var(--dark) !important;
+    margin-top: 28px;
+}
+
+.note-sig {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 32px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-mid);
+}
+
+.note-sig i { color: var(--pink); }
+
+/* ═══════════════════════════════════════════
+   16. LIGHTBOX — VISIONNEUSE PLEIN ÉCRAN
+   ═══════════════════════════════════════════
+   → S'ouvre quand on clique sur une photo dans la galerie
+   → .lightbox      : fond sombre (invisible par défaut, display:none)
+   → .lightbox.open : visible (ajouté par JavaScript)
+   → #lightbox-img  : la photo affichée en grand
+   → .lb-close      : bouton fermer en haut à droite
+   ════════════════════════════════════════════ */
+.lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,28,46,0.95);
+    z-index: 900;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+}
+
+.lightbox.open { display: flex; }
+
+#lightbox-img {
+    max-height: 90vh;
+    max-width: 90vw;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px rgba(240,167,175,0.4);
+}
+
+.lb-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s;
+}
+
+.lb-close:hover { background: rgba(255,255,255,0.25); }
+
+/* ═══════════════════════════════════════════
+   17. ÉTINCELLES AU CLIC
+   ═══════════════════════════════════════════
+   → Petits symboles (♡ ✦ ✿...) qui apparaissent où on clique
+   → Créés dynamiquement par JavaScript (spawnSpark dans script.js)
+   → Disparaissent après ~1 seconde avec l'animation "spark-up"
+   → Pour changer la couleur : modifie "color" dans .click-spark
+   → Pour changer la hauteur de la montée : modifie translateY dans @keyframes
+   ════════════════════════════════════════════ */
+.click-spark {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9990;
+    font-size: 1.2rem;
+    color: var(--pink);
+    animation: spark-up 1s ease-out forwards;
+    transform-origin: center;
+}
+
+@keyframes spark-up {
+    0%   { opacity: 1;   transform: translateY(0)    scale(1); }
+    100% { opacity: 0;   transform: translateY(-80px) scale(0.5); }
+}
+
+/* ═══════════════════════════════════════════
+   18. RESPONSIVE — ADAPTATION MOBILE
+   ═══════════════════════════════════════════
+   → @media (max-width: 900px) : tablettes et petits écrans
+   → @media (max-width: 480px) : smartphones
+   → Sur mobile :
+     - Hero devient vertical (colonne au lieu de côte à côte)
+     - Navigation : liens cachés, logo non centré
+     - Timeline : tout à gauche au lieu d'alterner
+     - Cartes : empilées verticalement
+     - Polaroïds : plus petits
+   ════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: calc(var(--nav-h) + 60px);
+        gap: 40px;
+    }
+
+    .hero-text { max-width: 100%; }
+    .hero-badge { display: none; }
+    .hero-tagline { font-size: 0.9rem; }
+
+    .hero-visual { max-width: 280px; }
+    .hero-blob { width: 260px; height: 320px; }
+
+    .deco-1, .deco-2, .deco-3 { display: none; }
+
+    .nav-group { display: none; }
+    .nav-inner { justify-content: space-between; }
+    .nav-logo { position: static; transform: none; }
+
+    .timeline::before { left: 20px; }
+    .tl-item { flex-direction: column; padding-left: 60px; }
+    .tl-dot { left: 20px; top: 0; }
+    .tl-card { width: 100%; margin: 0 !important; }
+    .tl-item.reveal { transform: translateX(0) translateY(30px); }
+
+    .countdown-card { padding: 32px 24px; gap: 12px; }
+    .cd-num { font-size: 2.2rem; }
+
+    .polaroids { gap: 10px; }
+    .polaroid { max-width: 140px; }
+    .pol-img { width: 116px; height: 140px; }
+
+    .cards-row { flex-direction: column; align-items: center; }
+    .feat-card { max-width: 100%; width: 100%; }
+
+    .note-card { padding: 36px 24px; }
+
+    .container { padding: 0 20px; }
+    .ov-content { padding: 80px 20px 40px; }
+
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+
+@media (max-width: 480px) {
+    .hero-title { font-size: 2.6rem; }
+    .s-header h2 { font-size: 1.8rem; }
+    .cd-num { font-size: 1.8rem; }
+    .cd-item { min-width: 56px; }
+    .cd-sep { font-size: 1.8rem; }
+    .countdown-card { padding: 24px 16px; gap: 8px; }
+}
